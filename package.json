@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/swagger": "^4.8.1",
     "kafkajs": "^1.15.0",
+    "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
     "swagger-ui-express": "^4.1.6"
