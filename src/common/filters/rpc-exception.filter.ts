@@ -1,9 +1,9 @@
 import { Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
-import { BaseRpcExceptionFilter } from '@nestjs/microservices';
+import { BaseRpcExceptionFilter, RpcException } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
-@Catch()
-export class ExceptionFilter extends BaseRpcExceptionFilter {
+@Catch(RpcException)
+export class ExceptionFilter extends BaseRpcExceptionFilter<RpcException> {
   catch(exception: any, host: ArgumentsHost): Observable<unknown> {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();

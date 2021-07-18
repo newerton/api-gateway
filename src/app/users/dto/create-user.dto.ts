@@ -4,12 +4,12 @@ export class CreateUserDto {
   @ApiProperty({
     example: 'Newerton',
   })
-  readonly name: string;
+  readonly firstName: string;
 
   @ApiProperty({
     example: 'Vargas de Araujo',
   })
-  readonly last_name: string;
+  readonly lastName: string;
 
   @ApiProperty({
     example: 'newerton.araujo@gmail.com',
@@ -19,15 +19,15 @@ export class CreateUserDto {
   @ApiProperty({
     example: '123456',
   })
-  readonly password_current: string;
+  readonly passwordCurrent: string;
 
   @ApiProperty({
     example: '123456',
   })
-  readonly repeat_password_current: string;
+  readonly repeatPasswordCurrent: string;
 
   @ApiProperty({
     example: 'abcdefg',
   })
-  readonly device_token?: string;
+  readonly deviceToken?: string;
 }

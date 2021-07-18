@@ -1,26 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { User } from '../users/entities/user.entity';
+import { LoginUserDto } from './dto/login-user.dto';
+import { Auth } from './entities/auth.entity';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    @Inject('AUTH_SERVICE')
+    private clientKafka: ClientKafka,
+  ) {}
+
+  private readonly logger = new Logger(AuthService.name);
+
+  login(data: LoginUserDto): Observable<Auth> {
+    return this.clientKafka.send('auth.login', data);
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  credentials(): Observable<Auth> {
+    return this.clientKafka.send('auth.credentials', {});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  createUser(user: CreateUserDto): Observable<User> {
+    return this.clientKafka.send('auth.users.create', user);
   }
 }

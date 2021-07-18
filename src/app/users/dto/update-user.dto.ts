@@ -5,14 +5,14 @@ import { CreateUserDto } from './create-user.dto';
 export class UpdateUserDto extends PartialType(
   OmitType(CreateUserDto, [
     'email',
-    'password_current',
-    'repeat_password_current',
+    'passwordCurrent',
+    'repeatPasswordCurrent',
   ] as const),
 ) {
   @ApiProperty({
     example: 'Newerton',
   })
-  readonly name: string;
+  readonly first_name: string;
 
   @ApiProperty({
     example: 'Vargas de Araujo',
