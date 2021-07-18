@@ -1,38 +1,50 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { HttpService } from '@nestjs/axios';
+import { Observable } from 'rxjs';
+import { AxiosResponse } from 'axios';
+import { catchError, map } from 'rxjs/operators';
+import { UnauthorizedException } from 'src/app.exceptions';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('USER_SERVICE')
-    private clientKafka: ClientKafka,
+    private readonly httpService: HttpService,
+    private configService: ConfigService,
   ) {}
 
-  create(user: CreateUserDto): Observable<User> {
-    return this.clientKafka.send('users.create', user);
-  }
+  baseUrl = this.configService.get<string>('keycloak.baseUrl');
+  realm = this.configService.get<string>('keycloak.realm');
 
-  findByEmail(email: string): Observable<User> {
-    return this.clientKafka.send('users.findbyemail', email);
-  }
+  url = `${this.baseUrl}/admin/realms/${this.realm}/users`;
 
-  findAll(): Observable<User[]> {
-    return this.clientKafka.send('users.findall', {});
-  }
+  headers = {
+    headers: {},
+  };
 
-  findOne(id: string): Observable<User> {
-    return this.clientKafka.send('users.findbyid', { id });
-  }
+  create(
+    { firstName, lastName, email }: CreateUserDto,
+    headers: { [key: string]: string },
+  ): Observable<AxiosResponse<User>> {
+    const payload = {
+      username: email,
+      firstName,
+      lastName,
+      email,
+      groups: ['/User'],
+      emailVerified: false,
+      enabled: true,
+    };
 
-  update(id: string, user: UpdateUserDto): Observable<User> {
-    return this.clientKafka.send('users.update', { id, user });
-  }
+    this.headers.headers['Authorization'] = headers.authorization;
 
-  remove(id: string) {
-    return this.clientKafka.send('users.remove', { id });
+    return this.httpService.post(this.url, payload, this.headers).pipe(
+      map((res) => res.data),
+      catchError((e) => {
+        throw new UnauthorizedException(e.response.data);
+      }),
+    );
   }
 }

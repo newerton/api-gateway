@@ -1,110 +1,54 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  OnModuleInit,
-  Inject,
-  Delete,
-  Param,
-  HttpCode,
-  Patch,
-} from '@nestjs/common';
+import { Controller, Post, HttpCode, Headers } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ClientKafka } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
 import { User } from './entities/user.entity';
 import {
-  ApiBadGatewayResponse,
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ParseMongoIdPipe } from 'src/common/pipes/ParseMongoIdPipe';
 import { UserService } from './users.service';
-import { Resource, Roles, Scopes } from 'src/common/auth/keycloak';
+import { Public, Resource, Scopes } from 'src/common/auth/keycloak';
 import { ErrorSchema } from 'src/common/schemas/Error.schema';
+import { Payload } from '@nestjs/microservices';
+import { JoiValidationPipe } from 'src/common/pipes/JoiValidation.pipe';
+import { UsersCreateSchema } from './validations/users.create.schema.validation';
+import { Observable } from 'rxjs';
+import { AxiosResponse } from 'axios';
 
 @ApiTags('users')
 @Controller('users')
 @Resource(User.name)
-export class UsersController implements OnModuleInit {
-  constructor(
-    @Inject('USER_SERVICE')
-    private clientKafka: ClientKafka,
-    private readonly userService: UserService,
-  ) {}
+export class UsersController {
+  constructor(private readonly userService: UserService) {}
 
-  async onModuleInit() {
-    const topics = [
-      // 'users.create',
-      'users.findbyemail',
-      'users.findall',
-      'users.findbyid',
-      'users.update',
-      'users.remove',
-    ];
-
-    topics.forEach(async (topic) => {
-      this.clientKafka.subscribeToResponseOf(topic);
-      await this.clientKafka.connect();
-    });
+  @Post()
+  @Scopes('create')
+  @HttpCode(200)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ description: 'Created successfully', type: User })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
+  @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
+  @Public()
+  create(
+    @Payload(new JoiValidationPipe(new UsersCreateSchema()))
+    user: CreateUserDto,
+    @Headers() headers: { [key: string]: string },
+  ): Observable<AxiosResponse<User>> {
+    return this.userService.create(user, headers);
   }
 
-  // @Post()
-  // @Scopes('create')
-  // @HttpCode(201)
+  // @Patch(':id')
+  // @Scopes('update')
   // @ApiBearerAuth()
-  // @ApiCreatedResponse({ description: 'Created successfully', type: User })
-  // @ApiForbiddenResponse({ description: 'Unauthorized', type: ErrorSchema })
-  // @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
-  // create(
+  // @ApiOkResponse({ description: 'Updated successfully', type: User })
+  // @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
+  // update(
+  //   @Param('id', ParseMongoIdPipe) id: string,
   //   @Body()
-  //   user: CreateUserDto,
-  // ): Observable<User> {
-  //   return this.userService.create(user);
+  //   user: UpdateUserDto,
+  // ) {
+  //   return this.userService.update(id, user);
   // }
-
-  @Get()
-  @Scopes('find-all')
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'List all users', type: User })
-  findAll(): Observable<User[]> {
-    return this.userService.findAll();
-  }
-
-  @Get(':id')
-  @Scopes('find-one')
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'List one user by ID', type: User })
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
-  }
-
-  @Patch(':id')
-  @Scopes('update')
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Updated successfully', type: User })
-  @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
-  update(
-    @Param('id', ParseMongoIdPipe) id: string,
-    @Body()
-    user: UpdateUserDto,
-  ) {
-    return this.userService.update(id, user);
-  }
-
-  @Delete(':id')
-  @Scopes('delete')
-  @ApiBearerAuth()
-  @HttpCode(204)
-  @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
-  }
 }

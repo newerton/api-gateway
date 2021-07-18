@@ -1,9 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 
 export class User {
   @ApiProperty()
   id: string;
+
+  @ApiProperty()
+  createdTimestamp: number;
+
+  @ApiProperty()
+  username: string;
+
+  @ApiProperty()
+  enabled: boolean;
+
+  @ApiProperty()
+  totp: boolean;
+
+  @ApiProperty()
+  emailVerified: boolean;
 
   @ApiProperty()
   firstName: string;
@@ -15,12 +29,11 @@ export class User {
   email: string;
 
   @ApiProperty()
-  password: string;
+  disableableCredentialTypes: Array<string>;
 
   @ApiProperty()
-  deviceToken: string;
+  requiredActions: Array<string>;
 
-  async comparePassword(attempt: string): Promise<boolean> {
-    return await bcrypt.compare(attempt, this.password);
-  }
+  @ApiProperty()
+  notBefore: number;
 }

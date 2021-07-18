@@ -1,29 +1,64 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { User } from '../users/entities/user.entity';
-import { LoginUserDto } from './dto/login-user.dto';
+import * as qs from 'qs';
+
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Auth } from './entities/auth.entity';
+import { ConfigService } from '@nestjs/config';
+import { LoginUserDto } from './dto/login-user.dto';
+import { HttpService } from '@nestjs/axios';
+import { AxiosResponse } from 'axios';
+import { catchError, map, Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject('AUTH_SERVICE')
-    private clientKafka: ClientKafka,
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
   ) {}
 
-  private readonly logger = new Logger(AuthService.name);
+  baseUrl = this.configService.get<string>('keycloak.baseUrl');
+  realm = this.configService.get<string>('keycloak.realm');
 
-  login(data: LoginUserDto): Observable<Auth> {
-    return this.clientKafka.send('auth.login', data);
+  url = `${this.baseUrl}/realms/${this.realm}/protocol/openid-connect/token`;
+
+  headers = {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  };
+
+  login({ email, password }: LoginUserDto): Observable<AxiosResponse<Auth>> {
+    const payload = qs.stringify({
+      grant_type: 'password',
+      client_id: this.configService.get<string>('keycloak.clientId'),
+      client_secret: this.configService.get<string>('keycloak.secret'),
+      scope: 'openid email profile',
+      username: email,
+      password: password,
+    });
+    return this.httpService.post(this.url, payload, this.headers).pipe(
+      map((res) => res.data),
+      catchError((e) => {
+        throw new UnauthorizedException(e.response.data);
+      }),
+    );
   }
 
-  credentials(): Observable<Auth> {
-    return this.clientKafka.send('auth.credentials', {});
-  }
+  credentials(): Observable<AxiosResponse<Auth>> {
+    const payload = qs.stringify({
+      client_id: this.configService.get<string>(
+        'keycloak.user_credentials.clientId',
+      ),
+      client_secret: this.configService.get<string>(
+        'keycloak.user_credentials.secret',
+      ),
+      grant_type: this.configService.get<string>(
+        'keycloak.user_credentials.grant_type',
+      ),
+    });
 
-  createUser(user: CreateUserDto): Observable<User> {
-    return this.clientKafka.send('auth.users.create', user);
+    return this.httpService.post(this.url, payload, this.headers).pipe(
+      map((res) => res.data),
+      catchError((e) => {
+        throw new UnauthorizedException(e.response.data);
+      }),
+    );
   }
 }
