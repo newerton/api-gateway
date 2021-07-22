@@ -7,11 +7,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Public, Resource, Scopes } from 'src/common/auth/keycloak';
-import { JoiValidationPipe } from 'src/common/pipes/JoiValidation.pipe';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Auth } from './entities/auth.entity';
-import { LoginSchema } from './validations/login.schema.validation';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
 
@@ -30,9 +28,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   @Public()
   @Scopes('login')
-  login(
-    @Payload(new JoiValidationPipe(new LoginSchema())) login: LoginUserDto,
-  ): Observable<AxiosResponse<Auth>> {
+  login(@Payload() login: LoginUserDto): Observable<Auth> {
     return this.authService.login(login);
   }
 

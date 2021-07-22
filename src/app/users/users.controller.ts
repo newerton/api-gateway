@@ -12,8 +12,6 @@ import { UserService } from './users.service';
 import { Public, Resource, Scopes } from 'src/common/auth/keycloak';
 import { ErrorSchema } from 'src/common/schemas/Error.schema';
 import { Payload } from '@nestjs/microservices';
-import { JoiValidationPipe } from 'src/common/pipes/JoiValidation.pipe';
-import { UsersCreateSchema } from './validations/users.create.schema.validation';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 
@@ -32,9 +30,8 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
   @Public()
   create(
-    @Payload(new JoiValidationPipe(new UsersCreateSchema()))
-    user: CreateUserDto,
-    @Headers() headers: { [key: string]: string },
+    @Payload() user: CreateUserDto,
+    @Headers() headers: HeadersInit,
   ): Observable<AxiosResponse<User>> {
     return this.userService.create(user, headers);
   }

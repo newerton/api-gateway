@@ -4,21 +4,19 @@ import { Response } from 'express';
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
+    const error = JSON.parse(exception);
+
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status =
-      exception.response?.statusCode ||
-      exception?.statusCode ||
-      exception?.status ||
-      400;
-    const error = exception.message;
+      error.response?.statusCode || error?.statusCode || error?.status || 400;
 
     const json = {
       statusCode: status,
-      error,
-      message: exception.message,
+      error: error.message,
+      message: error.message,
       details: [],
-      ...(exception.response || exception || ''),
+      ...(error.response || error || ''),
     };
 
     response.status(status).json(json);

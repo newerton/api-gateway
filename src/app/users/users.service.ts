@@ -1,50 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
-import { HttpService } from '@nestjs/axios';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
-import { catchError, map } from 'rxjs/operators';
-import { UnauthorizedException } from 'src/app.exceptions';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class UserService {
-  constructor(
-    private readonly httpService: HttpService,
-    private configService: ConfigService,
-  ) {}
-
-  baseUrl = this.configService.get<string>('keycloak.baseUrl');
-  realm = this.configService.get<string>('keycloak.realm');
-
-  url = `${this.baseUrl}/admin/realms/${this.realm}/users`;
-
-  headers = {
-    headers: {},
-  };
+  constructor(@Inject('AUTH_SERVICE') private readonly client: ClientProxy) {}
 
   create(
-    { firstName, lastName, email }: CreateUserDto,
-    headers: { [key: string]: string },
+    user: CreateUserDto,
+    headers: HeadersInit,
   ): Observable<AxiosResponse<User>> {
-    const payload = {
-      username: email,
-      firstName,
-      lastName,
-      email,
-      groups: ['/User'],
-      emailVerified: false,
-      enabled: true,
-    };
-
-    this.headers.headers['Authorization'] = headers.authorization;
-
-    return this.httpService.post(this.url, payload, this.headers).pipe(
-      map((res) => res.data),
-      catchError((e) => {
-        throw new UnauthorizedException(e.response.data);
-      }),
-    );
+    return this.client.send('auth.users.create', { user, headers });
   }
 }
