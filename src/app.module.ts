@@ -15,6 +15,7 @@ import {
   RoleGuard,
   TokenValidation,
 } from './common/auth/keycloak';
+import { ErrorFilter } from './common/filters/error.filter';
 
 @Module({
   imports: [
@@ -68,6 +69,10 @@ import {
     {
       provide: APP_FILTER,
       useClass: AllExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: ErrorFilter,
     },
   ],
 })

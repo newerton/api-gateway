@@ -12,10 +12,10 @@ export class UpdateUserDto extends PartialType(
   @ApiProperty({
     example: 'Newerton',
   })
-  readonly first_name: string;
+  readonly firstName: string;
 
   @ApiProperty({
     example: 'Vargas de Araujo',
   })
-  readonly last_name: string;
+  readonly lastName: string;
 }

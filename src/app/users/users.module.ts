@@ -9,8 +9,12 @@ import { UserService } from './users.service';
     HttpModule,
     ClientsModule.register([
       {
-        name: 'AUTH_SERVICE',
+        name: 'USER_SERVICE',
         transport: Transport.TCP,
+        options: {
+          host: 'localhost',
+          port: 3002,
+        },
       },
     ]),
   ],
