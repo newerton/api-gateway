@@ -3,11 +3,8 @@ import {
   Post,
   HttpCode,
   Headers,
-  Patch,
   Param,
-  Body,
   Put,
-  ParseUUIDPipe,
   Get,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -29,6 +26,10 @@ import { Payload } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ParseEmailPipe } from 'src/common/pipes/ParseEmail.pipe';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { MessageResponseSchema } from 'src/common/schemas/MessageResponse.schema';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -43,8 +44,8 @@ export class UsersController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
   @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
   @Public()
-  create(@Payload() user: CreateUserDto): Observable<AxiosResponse<User>> {
-    return this.userService.create(user);
+  create(@Payload() payload: CreateUserDto): Observable<AxiosResponse<User>> {
+    return this.userService.create(payload);
   }
 
   @Put()
@@ -56,10 +57,25 @@ export class UsersController {
   @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
   @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
   update(
-    @Payload() user: UpdateUserDto,
+    @Payload() payload: UpdateUserDto,
     @Headers() headers: HeadersInit,
   ): Observable<AxiosResponse<User>> {
-    return this.userService.update(user, headers);
+    return this.userService.update(payload, headers);
+  }
+
+  @Put('change-password')
+  @Scopes('change-password')
+  @HttpCode(204)
+  @ApiBearerAuth()
+  @ApiNoContentResponse({ description: 'Updated successfully', type: User })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
+  @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
+  @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
+  changePassword(
+    @Payload() payload: ChangePasswordDto,
+    @Headers() headers: HeadersInit,
+  ): Observable<AxiosResponse<User>> {
+    return this.userService.changePassword(payload, headers);
   }
 
   @Get()
@@ -71,5 +87,19 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
   me(@Headers() headers: HeadersInit): Observable<AxiosResponse<User>> {
     return this.userService.me(headers);
+  }
+
+  @Post('forgot-password')
+  @Scopes('forgot-password')
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'Message info', type: MessageResponseSchema })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
+  @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
+  @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
+  @Public()
+  forgotPassword(
+    @Payload() payload: ForgotPasswordDto,
+  ): Observable<AxiosResponse<User>> {
+    return this.userService.forgotPassword(payload);
   }
 }

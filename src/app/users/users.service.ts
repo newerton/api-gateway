@@ -5,23 +5,36 @@ import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { ClientProxy } from '@nestjs/microservices';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UserService {
   constructor(@Inject('USER_SERVICE') private readonly client: ClientProxy) {}
 
-  create(user: CreateUserDto): Observable<AxiosResponse<User>> {
-    return this.client.send('users.create', { user });
+  create(payload: CreateUserDto): Observable<AxiosResponse<User>> {
+    return this.client.send('users.create', { payload });
   }
 
   update(
-    user: UpdateUserDto,
+    payload: UpdateUserDto,
     headers: HeadersInit,
   ): Observable<AxiosResponse<User>> {
-    return this.client.send('users.update', { user, headers });
+    return this.client.send('users.update', { payload, headers });
   }
 
   me(headers: HeadersInit): Observable<AxiosResponse<User>> {
     return this.client.send('users.me', { headers });
+  }
+
+  forgotPassword(payload: ForgotPasswordDto): Observable<AxiosResponse<User>> {
+    return this.client.send('users.forgot_password', { payload });
+  }
+
+  changePassword(
+    payload: ChangePasswordDto,
+    headers: HeadersInit,
+  ): Observable<AxiosResponse<User>> {
+    return this.client.send('users.change_password', { payload, headers });
   }
 }
