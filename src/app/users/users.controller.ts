@@ -16,6 +16,7 @@ import {
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -40,6 +41,7 @@ export class UsersController {
   @Post()
   @Scopes('create')
   @HttpCode(200)
+  @ApiOperation({ summary: 'Create user' })
   @ApiCreatedResponse({ description: 'Created successfully', type: User })
   @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
   @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
@@ -52,6 +54,7 @@ export class UsersController {
   @Scopes('update')
   @HttpCode(204)
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update user info' })
   @ApiNoContentResponse({ description: 'Updated successfully', type: User })
   @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
   @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
@@ -67,6 +70,7 @@ export class UsersController {
   @Scopes('change-password')
   @HttpCode(204)
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Change password' })
   @ApiNoContentResponse({ description: 'Updated successfully', type: User })
   @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
   @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
@@ -81,6 +85,7 @@ export class UsersController {
   @Get()
   @Scopes('me')
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Show user info' })
   @ApiOkResponse({ description: 'User info', type: User })
   @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
   @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
@@ -92,6 +97,7 @@ export class UsersController {
   @Post('forgot-password')
   @Scopes('forgot-password')
   @HttpCode(200)
+  @ApiOperation({ summary: 'Forgot password' })
   @ApiOkResponse({ description: 'Message info', type: MessageResponseSchema })
   @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
   @ApiNotFoundResponse({ description: 'Not found', type: ErrorSchema })
