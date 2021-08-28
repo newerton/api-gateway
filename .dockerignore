@@ -1,0 +1,9 @@
+.env
+*.env
+*.env*
+.git
+.idea
+.history
+dist
+node_modules
+k8s

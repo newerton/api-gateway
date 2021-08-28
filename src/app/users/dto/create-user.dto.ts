@@ -17,6 +17,11 @@ export class CreateUserDto {
   readonly email: string;
 
   @ApiProperty({
+    example: true,
+  })
+  readonly emailVerified?: boolean;
+
+  @ApiProperty({
     example: '123456',
   })
   readonly passwordCurrent: string;

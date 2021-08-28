@@ -16,11 +16,13 @@ import {
   TokenValidation,
 } from './common/auth/keycloak';
 import { ErrorFilter } from './common/filters/error.filter';
+import { ProductsModule } from './app/products/products.module';
 
 @Module({
   imports: [
-    UsersModule,
     AuthModule,
+    ProductsModule,
+    UsersModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
