@@ -1,10 +1,9 @@
 {
   "name": "api-gateway",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "description": "A microservice with nest framework, typeorm, apache kafka and kubernetes.",
+  "license": "MIT",
+  "author": "Newerton Vargas de Araujo",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
