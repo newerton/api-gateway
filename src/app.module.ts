@@ -17,12 +17,10 @@ import {
 } from './common/auth/keycloak';
 import { ErrorFilter } from './common/filters/error.filter';
 import { ProductsModule } from './app/products/products.module';
+import { JoiValidationExceptionFilter } from './common/filters/joi.validation-exception.filter';
 
 @Module({
   imports: [
-    AuthModule,
-    ProductsModule,
-    UsersModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
@@ -46,6 +44,9 @@ import { ProductsModule } from './app/products/products.module';
         useNestLogger: config.get<boolean>('keycloak.useNestLogger'),
       }),
     }),
+    AuthModule,
+    ProductsModule,
+    UsersModule,
   ],
   providers: [
     {
@@ -75,6 +76,10 @@ import { ProductsModule } from './app/products/products.module';
     {
       provide: APP_FILTER,
       useClass: ErrorFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: JoiValidationExceptionFilter,
     },
   ],
 })

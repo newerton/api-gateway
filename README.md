@@ -12,30 +12,30 @@
 
 
 ## Project (development)
+### Technology
+- Nestjs
+- Apache Kafka
+- Docker
+- Kubernetes
+- KeyCloak
+- Stripe Payment
+- Queue
+- Istio
+- Github Actions
+- Nextjs
+- GraphQL
+- Elastic Stack
+- Prometheus
+- Grafana
 
-Nestjs\
-Apache Kafka\
-Docker\
-Kubernetes\
-KeyCloak\
-Stripe Payment\
-Queue\
-Istio\
-Github Actions\
-Nextjs\
-GraphQL\
-Elastic Stack\
-Prometheus\
-Grafana
-
-Microservices:\
-Auth\
-User\
-Product\
-Category\
-Payment\
-Log\
-Notifications
+### Microservices
+ - Auth
+ - User
+ - Product
+ - Category
+ - Payment
+ - Log
+ - Notifications
 
 
 ## Installation
@@ -50,6 +50,7 @@ Install Skaffold -  https://skaffold.dev/docs/install/
 | Keycloak | https://github.com/newerton/microservice-keycloak |
 | auth-engine | https://github.com/newerton/auth-engine |
 | user-engine | https://github.com/newerton/user-engine |
+| product-engine | https://github.com/newerton/product-engine |
 
 ## Running the app
 

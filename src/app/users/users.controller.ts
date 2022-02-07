@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Post,
-  HttpCode,
-  Headers,
-  Param,
-  Put,
-  Get,
-} from '@nestjs/common';
+import { Controller, Post, HttpCode, Headers, Put, Get } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import {
@@ -27,7 +19,6 @@ import { Payload } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ParseEmailPipe } from 'src/common/pipes/ParseEmail.pipe';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { MessageResponseSchema } from 'src/common/schemas/MessageResponse.schema';
 import { ChangePasswordDto } from './dto/change-password.dto';

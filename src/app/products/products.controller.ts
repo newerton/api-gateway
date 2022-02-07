@@ -1,4 +1,4 @@
-import { Controller, Post, HttpCode, Get } from '@nestjs/common';
+import { Controller, Post, HttpCode, Get, Inject } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './entities/product.entity';
 import {
@@ -12,15 +12,29 @@ import {
 import { ProductService } from './products.service';
 import { Public, Resource, Scopes } from 'src/common/auth/keycloak';
 import { ErrorSchema } from 'src/common/schemas/Error.schema';
-import { Payload } from '@nestjs/microservices';
+import { ClientKafka, Payload } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
+import { JoiValidationPipe } from 'src/common/pipes/JoiValidation.pipe';
+import { ProductCreateSchema } from 'src/common/validations/product-create.schema.validation';
 
 @ApiTags('products')
 @Controller('products')
 @Resource(Product.name)
 export class ProductsController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    @Inject('PRODUCT_SERVICE_KAFKA') private readonly clientKafka: ClientKafka,
+  ) {}
+
+  async onModuleInit() {
+    const topics = ['products.create'];
+
+    topics.forEach(async (topic) => {
+      this.clientKafka.subscribeToResponseOf(topic);
+      await this.clientKafka.connect();
+    });
+  }
 
   @Post()
   @Scopes('create')
@@ -31,8 +45,9 @@ export class ProductsController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
   @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
   create(
-    @Payload() payload: CreateProductDto,
-  ): Observable<AxiosResponse<Product>> {
+    @Payload(new JoiValidationPipe(new ProductCreateSchema()))
+    payload: CreateProductDto,
+  ): Observable<Product> {
     return this.productService.create(payload);
   }
 

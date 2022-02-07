@@ -1,9 +1,29 @@
+# Versioning and metadata
+.git
+.gitignore
+.dockerignore
+
+# Build dependencies
+/dist
+/node_modules
+/coverage
+
+# Environment (contains sensitive data)
 .env
 *.env
 *.env*
-.git
+
+# Files not required for production
+/.history
+/k8s
+.editorconfig
 .idea
-.history
-dist
-node_modules
-k8s
+.editorconfig
+.eslintrc.js
+.prettierrc
+Dockerfile
+Dockerfile.prod
+README.md
+tslint.json
+nodemon.json
+skaffold.yaml

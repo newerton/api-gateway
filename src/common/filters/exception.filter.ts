@@ -4,7 +4,6 @@ import { Response } from 'express';
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
-    console.log(exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
@@ -18,12 +17,29 @@ export class AllExceptionFilter implements ExceptionFilter {
 
     if (!this.hasJsonStructure(exception)) {
       const error = exception;
+
       json = {
         statusCode: status,
         error,
         message: error,
         details: [],
       };
+
+      if (error?.statusCode) {
+        json.statusCode = error.statusCode;
+      }
+
+      if (error?.error) {
+        json.error = error.error;
+      }
+
+      if (error?.message) {
+        json.message = error.message;
+      }
+
+      if (error?.details) {
+        json.details = error.details;
+      }
     } else {
       const error = JSON.parse(exception);
       status =

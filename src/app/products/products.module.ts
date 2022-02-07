@@ -9,11 +9,25 @@ import { ProductService } from './products.service';
     HttpModule,
     ClientsModule.register([
       {
-        name: 'PRODUCT_SERVICE',
+        name: 'PRODUCT_SERVICE_TCP',
         transport: Transport.TCP,
         options: {
           host: 'product-engine',
           port: 3003,
+        },
+      },
+      {
+        name: 'PRODUCT_SERVICE_KAFKA',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'product',
+            brokers: ['host.docker.internal:9094'],
+          },
+          consumer: {
+            groupId: 'product-consumer',
+            allowAutoTopicCreation: true,
+          },
         },
       },
     ]),

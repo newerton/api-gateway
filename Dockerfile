@@ -1,13 +1,11 @@
-FROM node:14-alpine
+FROM node:14.17.6-alpine3.14
+ENV NODE_ENV=development
 
 WORKDIR /app
-EXPOSE 8000
 
-COPY package* ./
-RUN apk update && apk add --no-cache --virtual .build-deps make gcc g++ python \
- && npm ci \
- && apk del .build-deps
+COPY package*.json ./
+RUN npm ci
 COPY . .
 
-ENV NODE_ENV=development
+EXPOSE 8000
 CMD ["npm", "run", "start:dev"]

@@ -5,7 +5,7 @@ import {
   Module,
   Provider,
 } from '@nestjs/common';
-import * as KeycloakConnect from 'keycloak-connect';
+import KeycloakConnect from 'keycloak-connect';
 import {
   KEYCLOAK_CONNECT_OPTIONS,
   KEYCLOAK_INSTANCE,
