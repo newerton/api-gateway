@@ -3,24 +3,14 @@ kind: Config
 metadata:
   name: dev-k8s-api-gateway
 build:
-  # local:
-  #   push: false
+  local:
+    push: false
   artifacts:
     - image: newerton/api-gateway
       context: .
       docker:
-        dockerfile: Dockerfile.prod
+        dockerfile: Dockerfile
       sync:
         manual:
-          - src: 'src/**/*.*'
+          - src: "src/**/*.*"
             dest: .
-deploy:
-  # kubeContext: docker-desktop
-  kubectl:
-    flags:
-      global: [--namespace=nestjs-k8s-namespace]
-    manifests:
-      - ./k8s/01-namespaces.yaml
-      - ./k8s/02-secrets.yaml
-      - ./k8s/03-app.yaml
-      - ./k8s/04-ingress.yaml
