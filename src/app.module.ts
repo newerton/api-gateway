@@ -29,7 +29,7 @@ import { JoiValidationExceptionFilter } from './common/filters/joi.validation-ex
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         debug: config.get<string>('keycloak.debug'),
-        authServerUrl: config.get<string>('keycloak.baseUrl'),
+        authServerUrl: config.get<string>('keycloak.baseInternalUrl'),
         realm: config.get<string>('keycloak.realm'),
         clientId: config.get<string>('keycloak.clientId'),
         secret: config.get<string>('keycloak.secret'),

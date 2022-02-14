@@ -68,6 +68,7 @@ requires:
   - path: ./api-gateway
   - path: ./auth-engine
   - path: ./user-engine
+  - path: ./product-engine
 
 ```
 

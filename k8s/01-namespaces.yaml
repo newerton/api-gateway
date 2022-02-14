@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    app: nestjs-k8s-namespace
-  name: nestjs-k8s-namespace
