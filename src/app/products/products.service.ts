@@ -4,6 +4,7 @@ import { Product } from './entities/product.entity';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { ClientKafka, ClientProxy } from '@nestjs/microservices';
+import { QueryFilterSchemaProps } from 'src/common/validations/query-filter.schema.validation';
 
 @Injectable()
 export class ProductService {
@@ -20,7 +21,7 @@ export class ProductService {
     return this.clientKafka.send('products.create', payload);
   }
 
-  findAll(): Observable<AxiosResponse<Product[]>> {
-    return this.client.send('products.findall', {});
+  findAll(query: QueryFilterSchemaProps): Observable<AxiosResponse<Product[]>> {
+    return this.client.send('products.findall', { query });
   }
 }

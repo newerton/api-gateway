@@ -1,60 +1,57 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpStatus,
+} from '@nestjs/common';
 import { Response } from 'express';
+import { JoiValidationException } from '../pipes/JoiValidation.pipe';
+
+type ErrorProps = {
+  statusCode: number;
+  error: string;
+  message: string;
+  details: Array<{ [key: string]: any }>;
+};
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
+    // console.log(exception, host);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    let status = 500;
-    let json = {
-      statusCode: status,
-      error: '',
-      message: '',
+    const json = {
+      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      error: 'Internal Server Error',
+      message: 'Internal Server Error',
       details: [],
     };
 
-    if (!this.hasJsonStructure(exception)) {
-      const error = exception;
-
-      json = {
-        statusCode: status,
-        error,
-        message: error,
-        details: [],
-      };
-
-      if (error?.statusCode) {
+    if (exception instanceof JoiValidationException) {
+      const error = exception.getResponse() as ErrorProps;
+      json.statusCode = exception.getStatus();
+      json.error = JoiValidationException.name;
+      json.message = error.message;
+      json.details = error.details;
+    } else if (typeof exception === 'string') {
+      if (this.hasJsonStructure(exception)) {
+        const error = JSON.parse(exception) as ErrorProps;
         json.statusCode = error.statusCode;
-      }
-
-      if (error?.error) {
         json.error = error.error;
-      }
-
-      if (error?.message) {
         json.message = error.message;
-      }
-
-      if (error?.details) {
         json.details = error.details;
+      } else {
+        console.log(exception);
       }
     } else {
-      const error = JSON.parse(exception);
-      status =
-        error.response?.statusCode || error?.statusCode || error?.status || 400;
-
-      json = {
-        statusCode: status,
-        error: error.message,
-        message: error.message,
-        details: [],
-        ...(error.response || error || ''),
-      };
+      console.log(exception);
+      json.error = exception.error;
+      json.message = exception.message;
+      json.details = exception.details || [];
     }
 
-    response.status(status).json(json);
+    response.status(json.statusCode).json(json);
   }
 
   hasJsonStructure(str: any) {

@@ -14,8 +14,14 @@
     "skipLibCheck": true,
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": false,
     "allowJs": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*"
+  ],
 }
