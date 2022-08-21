@@ -21,6 +21,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('credentials')
+  @Scopes('credentials')
+  @Public()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Create user credentials (Expire in 15 seconds)' })
   @ApiOkResponse({
@@ -28,13 +30,13 @@ export class AuthController {
     type: Auth,
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @Public()
-  @Scopes('credentials')
   credentials(): Observable<AxiosResponse<Auth>> {
     return this.authService.credentials();
   }
 
   @Post('login')
+  @Scopes('login')
+  @Public()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login with email' })
   @ApiOkResponse({
@@ -42,13 +44,13 @@ export class AuthController {
     type: Auth,
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @Public()
-  @Scopes('login')
   login(@Payload() login: LoginUserDto): Observable<Auth> {
     return this.authService.login(login);
   }
 
   @Post('login/facebook')
+  @Scopes('login-facebook')
+  @Public()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login with Facebook' })
   @ApiOkResponse({
@@ -56,13 +58,13 @@ export class AuthController {
     type: Auth,
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @Public()
-  @Scopes('login-facebook')
   loginWithFacebook(@Payload() login: LoginWithProvidersDto): Observable<Auth> {
     return this.authService.loginWithFacebook(login);
   }
 
   @Post('login/google')
+  @Scopes('login-google')
+  @Public()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login with Google' })
   @ApiOkResponse({
@@ -70,13 +72,13 @@ export class AuthController {
     type: Auth,
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @Public()
-  @Scopes('login-google')
   loginWithGoogle(@Payload() login: LoginWithProvidersDto): Observable<Auth> {
     return this.authService.loginWithGoogle(login);
   }
 
   @Post('login/apple')
+  @Scopes('login-apple')
+  @Public()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login with Apple' })
   @ApiOkResponse({
@@ -84,8 +86,6 @@ export class AuthController {
     type: Auth,
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @Public()
-  @Scopes('login-apple')
   loginWithApple(@Payload() login: LoginWithProvidersDto): Observable<Auth> {
     return this.authService.loginWithApple(login);
   }

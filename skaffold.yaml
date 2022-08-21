@@ -1,7 +1,7 @@
-apiVersion: skaffold/v1
+apiVersion: skaffold/v2beta29
 kind: Config
 metadata:
-  name: dev-k8s-api-gateway
+  name: mktplace-develop-api-gateway
 build:
   local:
     push: false
@@ -14,3 +14,9 @@ build:
         manual:
           - src: "src/**/*.*"
             dest: .
+deploy:
+  kubectl:
+    manifests:
+      - k8s/secrets.yaml
+      - k8s/deployment.yaml
+      - k8s/service.yaml

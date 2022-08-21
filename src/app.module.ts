@@ -1,7 +1,5 @@
 import { LogLevel, Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
-import { ExceptionFilter } from './common/filters/rpc-exception.filter';
 import { UsersModule } from './app/users/users.module';
 import { AuthModule } from './app/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -15,9 +13,7 @@ import {
   RoleGuard,
   TokenValidation,
 } from './common/auth/keycloak';
-import { ErrorFilter } from './common/filters/error.filter';
 import { ProductsModule } from './app/products/products.module';
-import { JoiValidationExceptionFilter } from './common/filters/joi.validation-exception.filter';
 
 @Module({
   imports: [
@@ -61,26 +57,26 @@ import { JoiValidationExceptionFilter } from './common/filters/joi.validation-ex
       provide: APP_GUARD,
       useClass: RoleGuard,
     },
-    {
-      provide: APP_FILTER,
-      useClass: ExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: ExceptionFilter,
+    // },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: HttpExceptionFilter,
+    // },
     {
       provide: APP_FILTER,
       useClass: AllExceptionFilter,
     },
-    {
-      provide: APP_FILTER,
-      useClass: ErrorFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: JoiValidationExceptionFilter,
-    },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: ErrorFilter,
+    // },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: JoiValidationExceptionFilter,
+    // },
   ],
 })
 export class AppModule {}

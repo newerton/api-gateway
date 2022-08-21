@@ -1,4 +1,12 @@
-import { Controller, Post, HttpCode, Get, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  HttpCode,
+  Get,
+  Inject,
+  UseInterceptors,
+  Query,
+} from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './entities/product.entity';
 import {
@@ -17,6 +25,11 @@ import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { JoiValidationPipe } from 'src/common/pipes/JoiValidation.pipe';
 import { ProductCreateSchema } from 'src/common/validations/product-create.schema.validation';
+import { HeadersPaginationInterceptor } from 'src/common/interceptors/headers-pagination.interceptors';
+import {
+  QueryFilterSchema,
+  QueryFilterSchemaProps,
+} from 'src/common/validations/query-filter.schema.validation';
 
 @ApiTags('products')
 @Controller('products')
@@ -59,7 +72,11 @@ export class ProductsController {
   @ApiOkResponse({ description: 'Show products', type: Product })
   @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorSchema })
   @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
-  findAll(): Observable<AxiosResponse<Product[]>> {
-    return this.productService.findAll();
+  @UseInterceptors(HeadersPaginationInterceptor)
+  findAll(
+    @Query(new JoiValidationPipe(new QueryFilterSchema()))
+    query: QueryFilterSchemaProps,
+  ): Observable<AxiosResponse<Product[]>> {
+    return this.productService.findAll(query);
   }
 }

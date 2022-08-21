@@ -16,7 +16,7 @@ import { ProductService } from './products.service';
           name: 'PRODUCT_SERVICE_TCP',
           transport: Transport.TCP,
           options: {
-            host: 'product-engine',
+            host: '0.0.0.0',
             port: 3003,
           },
         }),
