@@ -1,0 +1,106 @@
+version: "3.7"
+
+services:
+  keycloak:
+    image: bitnami/keycloak:latest
+    container_name: api-gateway-keycloak
+    environment:
+      - KEYCLOAK_ADMIN_USER=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KEYCLOAK_EXTRA_ARGS=
+        -Dkeycloak.profile.feature.client_secret_rotation=enabled
+        -Dkeycloak.profile.feature.declarative_user_profile=enabled
+        -Dkeycloak.profile.feature.docker=enabled
+        -Dkeycloak.profile.feature.dynamic_scopes=enabled
+        -Dkeycloak.profile.feature.openshift_integration=enabled
+        -Dkeycloak.profile.feature.recovery_codes=enabled
+        -Dkeycloak.profile.feature.scripts=enabled
+        -Dkeycloak.profile.feature.update_email=enabled
+        -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled
+        -Dkeycloak.profile.feature.token_exchange=enabled
+        -Dkeycloak.migration.action=import
+        -Dkeycloak.migration.provider=dir
+        -Dkeycloak.migration.dir=/tmp/import
+      - KEYCLOAK_DATABASE_HOST=postgres
+      - KEYCLOAK_DATABASE_PORT=5432
+      - KEYCLOAK_DATABASE_NAME=keycloak
+      - KEYCLOAK_DATABASE_USER=docker
+      - KEYCLOAK_DATABASE_PASSWORD=docker
+    volumes:
+      - ./.docker/keycloak/config/standalone-ha.xml:/opt/bitnami/keycloak/standalone/configuration/standalone-ha.xml
+      - ./.docker/keycloak/config/nestjs-auth-realm.json:/tmp/import/nestjs-auth-realm.json
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    networks:
+      - default
+
+  postgres:
+    image: postgres:14
+    container_name: api-gateway-postgres
+    ports:
+      - '54321:5432'
+    volumes:
+      - ./.docker/database/postgresql/data/:/var/lib/postgresql/data
+      - ./.docker/database/postgresql/initdb/:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=keycloak
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+    tmpfs:
+      - /var/lib/postgresql
+    networks:
+      - default
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: api-gateway-kafka
+    ports:
+      - 9092:9092
+      - 9094:9094
+    environment:
+      - KAFKA_KRAFT_CLUSTER_ID=r4zt_wrqTRuT7W2NJsB_GA
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9092,CONTROLLER://:9093,EXTERNAL://0.0.0.0:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    networks:
+      - default
+
+  kafka-ui:
+    image: 'provectuslabs/kafka-ui:latest'
+    container_name: api-gateway-kafka-ui
+    ports:
+      - "8081:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_NAME=r4zt_wrqTRuT7W2NJsB_GA
+
+  # control-center:
+  #   image: confluentinc/cp-enterprise-control-center:latest
+  #   container_name: api-gateway-kafka-control-center
+  #   ports:
+  #     - "9021:9021"
+  #   environment:
+  #     - CONTROL_CENTER_BOOTSTRAP_SERVERS=kafka:9092
+  #     - CONTROL_CENTER_REPLICATION_FACTOR=1
+  #     - CONTROL_CENTER_CONNECT_CLUSTER=http://kafka-connect:8083
+  #     - PORT=9021
+  #   depends_on:
+  #     - kafka
+
+volumes:
+   postgres:
+    driver: local
+
+networks:
+  default:
+    driver: bridge

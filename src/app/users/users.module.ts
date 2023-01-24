@@ -1,9 +1,27 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { UsersController } from './users.controller';
-import { UserService } from './users.service';
 
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env/api-server.config';
+
+import { UserChangePasswordController } from './controllers/user-change-password.controller';
+import { UserCreateController } from './controllers/user-create.controller';
+import { UserForgotPasswordController } from './controllers/user-forgot-password.controller';
+import { UserMeController } from './controllers/user-me.controller';
+import { UserUpdateController } from './controllers/user-update.controller';
+import { UserChangePasswordUseCase } from './use-cases/user-change-password.use-case';
+import { UserCreateUseCase } from './use-cases/user-create.use-case';
+import { UserForgotPasswordUseCase } from './use-cases/user-forgot-password.use-case';
+import { UserMeUseCcase } from './use-cases/user-me.use-case';
+import { UserUpdateUseCase } from './use-cases/user-update.use-case';
+
+const useCases = [
+  UserChangePasswordUseCase,
+  UserCreateUseCase,
+  UserForgotPasswordUseCase,
+  UserMeUseCcase,
+  UserUpdateUseCase,
+];
 @Module({
   imports: [
     HttpModule,
@@ -13,13 +31,19 @@ import { UserService } from './users.service';
         transport: Transport.TCP,
         options: {
           host: '0.0.0.0',
-          port: 3002,
+          port: ApiServerConfig.USER_ENGINE_PORT,
         },
       },
     ]),
   ],
-  controllers: [UsersController],
-  providers: [UserService],
-  exports: [UserService],
+  controllers: [
+    UserChangePasswordController,
+    UserCreateController,
+    UserForgotPasswordController,
+    UserMeController,
+    UserUpdateController,
+  ],
+  providers: [...useCases],
+  exports: [...useCases],
 })
 export class UsersModule {}
