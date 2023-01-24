@@ -1,9 +1,27 @@
-import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
 import { HttpModule } from '@nestjs/axios';
+import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env/api-server.config';
+
+import { AuthCredentialsController } from './controllers/auth-credentials.controller';
+import { AuthLoginAppleController } from './controllers/auth-login-apple.controller';
+import { AuthLoginFacebookController } from './controllers/auth-login-facebook.controller';
+import { AuthLoginGoogleController } from './controllers/auth-login-google.controller';
+import { AuthLoginController } from './controllers/auth-login.controller';
+import { AuthCredentialsUseCase } from './use-cases/auth-credentials.use-case';
+import { AuthLoginAppleUseCase } from './use-cases/auth-login-apple.use-case';
+import { AuthLoginFacebookUseCase } from './use-cases/auth-login-facebook.use-case';
+import { AuthLoginGoogleUseCase } from './use-cases/auth-login-google.use-case';
+import { AuthLoginUseCase } from './use-cases/auth-login.use-case';
+
+const useCases = [
+  AuthCredentialsUseCase,
+  AuthLoginAppleUseCase,
+  AuthLoginFacebookUseCase,
+  AuthLoginGoogleUseCase,
+  AuthLoginUseCase,
+];
 @Module({
   imports: [
     HttpModule,
@@ -13,13 +31,19 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         transport: Transport.TCP,
         options: {
           host: '0.0.0.0',
-          port: 3001,
+          port: ApiServerConfig.AUTH_ENGINE_PORT,
         },
       },
     ]),
   ],
-  controllers: [AuthController],
-  providers: [AuthService],
-  exports: [AuthService],
+  controllers: [
+    AuthCredentialsController,
+    AuthLoginAppleController,
+    AuthLoginFacebookController,
+    AuthLoginGoogleController,
+    AuthLoginController,
+  ],
+  providers: [...useCases],
+  exports: [...useCases],
 })
 export class AuthModule {}

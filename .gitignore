@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+.env
 
 # Logs
 logs
@@ -35,10 +36,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # Plugins - VSCode
-/.history
-
-# Environment file
-.env
-
-#Lock files
-yarn.lock
+.history/

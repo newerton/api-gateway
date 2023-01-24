@@ -13,15 +13,15 @@
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
-    "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "allowJs": true,
-    "esModuleInterop": true
-  },
-  "include": [
-    "src/**/*"
-  ],
+    "resolveJsonModule": true,
+    "paths": {
+      "@core/*": ["./src/_core/*"],
+      "@app/*": ["./src/app/*"],
+      "@test/*": ["./test/*"]
+    }
+  }
 }

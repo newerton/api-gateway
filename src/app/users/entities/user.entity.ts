@@ -29,6 +29,9 @@ export class User {
   email: string;
 
   @ApiProperty()
+  attributes: { [key: string]: string };
+
+  @ApiProperty()
   disableableCredentialTypes: Array<string>;
 
   @ApiProperty()

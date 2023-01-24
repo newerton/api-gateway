@@ -3,8 +3,9 @@ kind: Ingress
 metadata:
   name: api-gateway-ingress
 spec:
+  ingressClassName: nginx
   rules:
-  - host: "api.microservice.local"
+  - host: api.microservice.local
     http:
       paths:
       - pathType: Prefix
