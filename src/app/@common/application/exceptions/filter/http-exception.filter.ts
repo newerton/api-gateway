@@ -47,10 +47,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
       Logger.error(message);
     }
 
-    const status =
-      errorResponse.code < 100 && errorResponse.code > 999
-        ? 500
-        : errorResponse.code;
+    const validRanges = [
+      [100, 511],
+      [1000, 1004],
+    ];
+    const validRange = validRanges.find(
+      ([start, end]) =>
+        start <= errorResponse.code && errorResponse.code <= end,
+    );
+    const status = validRange ? errorResponse.code : 500;
 
     response.status(status).json(errorResponse);
   }
