@@ -47,7 +47,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
       Logger.error(message);
     }
 
-    const status = errorResponse.code > 999 ? 400 : errorResponse.code;
+    const status =
+      errorResponse.code < 100 && errorResponse.code > 999
+        ? 500
+        : errorResponse.code;
 
     response.status(status).json(errorResponse);
   }
@@ -57,17 +60,22 @@ export class HttpExceptionFilter implements ExceptionFilter {
     errorResponse: CoreApiResponse<unknown>,
   ): CoreApiResponse<unknown> {
     if (error instanceof HttpException) {
+      const codeArray = Object.values(Code);
+      const errorMessage = codeArray.find(
+        (item) => item.code === error.getStatus(),
+      );
       errorResponse = CoreApiResponse.error(
-        error.getStatus(),
-        'HttpException',
+        error.getStatus() < 100 ? Code.INTERNAL_ERROR.code : error.getStatus(),
+        errorMessage?.error || Code.INTERNAL_ERROR.error,
         error.message,
+        null,
       );
     }
     if (error instanceof UnauthorizedException) {
       errorResponse = CoreApiResponse.error(
         Code.UNAUTHORIZED.code,
-        Code.UNAUTHORIZED.error,
         Code.UNAUTHORIZED.message,
+        null,
       );
     }
 
