@@ -37,7 +37,7 @@
     "helmet": "^6.0.1",
     "joi": "17.7.0",
     "kafkajs": "2.2.3",
-    "keycloak-connect": "20.0.3",
+    "keycloak-connect": "21.0.1",
     "lightship": "7.1.1",
     "nest-keycloak-connect": "1.9.1",
     "reflect-metadata": "^0.1.13",
