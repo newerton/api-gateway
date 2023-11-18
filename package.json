@@ -21,7 +21,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@nestjs/axios": "^1.0.1",
+    "@nestjs/axios": "^3.0.1",
     "@nestjs/common": "9.2.1",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "9.2.1",
