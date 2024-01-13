@@ -1,4 +1,4 @@
-import { RabbitMQServerConfig } from '@core/@shared/infrastructure/config/env/rabbitmq-server.config';
+import { RabbitMQServerConfig } from '@core/@shared/infrastructure/config/env';
 
 const protocol = RabbitMQServerConfig.RABBITMQ_PROTOCOL;
 const host = RabbitMQServerConfig.RABBITMQ_HOST;

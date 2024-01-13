@@ -6,8 +6,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Resource } from 'nest-keycloak-connect';
-import { Public, Scopes } from 'nest-keycloak-connect/keycloak-connect.module';
+import { Public, Resource, Scopes } from 'nest-keycloak-connect';
 import { Observable } from 'rxjs';
 
 import { AuthLoginProvidersInput } from '../dto/auth-login-providers.dto';

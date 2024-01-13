@@ -18,10 +18,25 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
+    "esModuleInterop": true,
     "paths": {
-      "@core/*": ["./src/_core/*"],
-      "@app/*": ["./src/app/*"],
-      "@test/*": ["./test/*"]
+      "@core/*": [
+        "./src/_core/*"
+      ],
+      "@app/*": [
+        "./src/app/*"
+      ],
+      "@test/*": [
+        "./test/*"
+      ]
     }
-  }
+  },
+  "include": [
+    "src/**/*",
+    "test/**/*"
+ ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

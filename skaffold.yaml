@@ -16,7 +16,7 @@ build:
             dest: .
 deploy:
   kubectl:
-    manifests:
+    remoteManifests:
       - k8s/secrets.yaml
       - k8s/deployment.yaml
       - k8s/service.yaml
