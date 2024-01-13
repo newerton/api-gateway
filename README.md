@@ -12,82 +12,77 @@
 
 
 ## Project (development)
-### Technology
-- Nestjs
-- Apache Kafka
-- Docker
-- Kubernetes
-- KeyCloak
-- Stripe Payment
-- Queue
-- Istio
-- Github Actions
-- Nextjs
-- GraphQL
-- Elastic Stack
-- Prometheus
-- Grafana
 
-### Microservices
- - Auth
- - User
- - Product
- - Category
- - Payment
- - Log
- - Notifications
+| Technology          |   |
+|---------------------|:--------:|
+| Nestjs              | ✅     |
+| Apache Kafka        | ✅     |
+| Docker              | ✅     |
+| Kubernetes          | ✅     |
+| KeyCloak            | ✅     |
+| Stripe Payment      | 🟦     |
+| Queue               | 🟦     |
+| Istio               | 🟦     |
+| Github Actions      | 🟦     |
+| Nextjs              | 🟦     |
+| GraphQL             | 🟦     |
+| Elastic Stack       | 🟦     |
+| Prometheus          | 🟦     |
+| Grafana             | 🟦     |
 
+| Microservices   |   |
+|----------------|:--------:|
+| Auth           | ✅     |
+| User           | ✅     |
+| Product        | ✅     |
+| Category       | 🟦     |
+| Payment        | 🟦     |
+| Log            | 🟦     |
+| Notifications  | 🟦     |
 
-## Installation
-
-Install Skaffold -  https://skaffold.dev/docs/install/
+✅ Developed 🟦 Not developed
 
 ## Clone other repositories
 
 | Microservice | Repository |
 | --- | --- |
-| Apache Kafka | https://github.com/newerton/microservice-kafka |
-| Keycloak | https://github.com/newerton/microservice-keycloak |
+| Helm Services | https://github.com/newerton/microservice-k8s |
 | auth-engine | https://github.com/newerton/auth-engine |
 | user-engine | https://github.com/newerton/user-engine |
 | product-engine | https://github.com/newerton/product-engine |
 
-## Running the app
+## Installation
 
-Running all microservices in nest
+Install Tilt ❤️ (*A toolkit for fixing the pains of microservice development.*) - https://tilt.dev/
 
-```yaml
-# Creates a skaffold.yaml file outside the repository folders
+## Execute Tilt
 
-apiVersion: skaffold/v2beta11
-kind: Config
-build:
-  local:
-    concurrency: 0 #builds all artifacts parallely
-requires:
-  - path: ./api-gateway
-  - path: ./auth-engine
-  - path: ./user-engine
-  - path: ./product-engine
+Execute Tilt inside microservice-k8s folder
 
+```cli
+git clone git@github.com:newerton/microservice-k8s.git
+cd microservice-k8s
+tilt up
 ```
+## Running the api-gateway
 
-```bash
-# development
-$ skaffold dev --port-forward
+Execute api-gateway inside api-gateway folder
+
+```cli
+npm install
+npm run start:dev
 ```
-
 
 ## Swagger
 
 ```url
-http://localhost:8000/docs/
+http://localhost:8000/api-docs/
 ```
 
 ## Keycloak
 
 ```url
-http://localhost:8080
+http://auth.microservice.local
 ```
 
 ## Stay in touch
