@@ -2,7 +2,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env/api-server.config';
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
 import { AuthCredentialsController } from './controllers/auth-credentials.controller';
 import { AuthLoginAppleController } from './controllers/auth-login-apple.controller';

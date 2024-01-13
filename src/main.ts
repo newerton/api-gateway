@@ -1,30 +1,34 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import csurf from 'csurf';
 import helmet from 'helmet';
-import { ConfigurationInput, Lightship, createLightship } from 'lightship';
+// import {
+//   type ConfigurationInput,
+//   type Lightship,
+//   createLightship,
+// } from 'lightship';
 
-import { applySwagger } from '@app/@common/application/config/swagger.config';
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env/api-server.config';
+import { applySwagger } from '@app/@common/application/config';
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
 import { MainModule } from './main.module';
 
 const logger = new Logger('Main');
 
 async function bootstrap() {
-  const configuration: ConfigurationInput = {
-    detectKubernetes: ApiServerConfig.ENV !== 'production' ? false : true,
-    gracefulShutdownTimeout: 30 * 1000,
-    port: ApiServerConfig.LIGHTSHIP_PORT,
-  };
+  // const configuration: ConfigurationInput = {
+  //   detectKubernetes: ApiServerConfig.ENV !== 'production' ? false : true,
+  //   gracefulShutdownTimeout: 30 * 1000,
+  //   port: ApiServerConfig.LIGHTSHIP_PORT,
+  // };
 
-  const lightship: Lightship = await createLightship(configuration);
+  // const lightship: Lightship = await createLightship(configuration);
 
   const app = await NestFactory.create(MainModule);
 
-  lightship.registerShutdownHandler(() => app.close());
+  // lightship.registerShutdownHandler(() => app.close());
 
   // app.useGlobalPipes(new ValidationPipe());
 
@@ -56,7 +60,7 @@ async function bootstrap() {
   applySwagger(app);
 
   await app.listen(ApiServerConfig.PORT).then(() => {
-    lightship.signalReady();
+    // lightship.signalReady();
     logger.log(
       `api-gateway is running in http://localhost:${ApiServerConfig.PORT}`,
     );

@@ -3,12 +3,13 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env/api-server.config';
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
-import { ProductCreateController } from './controllers/product-create.controller';
-import { ProductFindAllController } from './controllers/product-find-all.controller';
-import { ProductCreateUseCase } from './use-cases/product-create.use-case';
-import { ProductFindAllUseCase } from './use-cases/product-find-all.use-case';
+import {
+  ProductCreateController,
+  ProductFindAllController,
+} from './controllers';
+import { ProductCreateUseCase, ProductFindAllUseCase } from './use-cases';
 
 @Module({
   imports: [
@@ -48,6 +49,5 @@ import { ProductFindAllUseCase } from './use-cases/product-find-all.use-case';
   ],
   controllers: [ProductCreateController, ProductFindAllController],
   providers: [ProductCreateUseCase, ProductFindAllUseCase],
-  exports: [ProductCreateUseCase, ProductFindAllUseCase],
 })
 export class ProductsModule {}

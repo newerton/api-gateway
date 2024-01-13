@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
-import { JoiValidationException } from '../../pipes/joi-validation.pipe';
+import { ZodValidationException } from '../../pipes';
 
-@Catch(JoiValidationException)
-export class JoiValidationExceptionFilter implements ExceptionFilter {
+@Catch(ZodValidationException)
+export class ZodValidationExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -18,7 +18,7 @@ export class JoiValidationExceptionFilter implements ExceptionFilter {
 
     const json = {
       code: status,
-      error: 'JOI_VALIDATION_EXCEPTION',
+      error: 'ZOD_VALIDATION_EXCEPTION',
       message: exception.message,
       ...exceptionResponse,
     };

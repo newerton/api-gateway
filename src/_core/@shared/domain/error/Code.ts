@@ -322,10 +322,10 @@ export class Code {
   };
 
   // SERVER ERROR RESPONSE
-  static INTERNAL_ERROR: CodeDescription = {
+  static INTERNAL_SERVER_ERROR: CodeDescription = {
     code: 500,
-    error: 'INTERNAL_ERROR',
-    message: 'Internal error',
+    error: 'INTERNAL_SERVER_ERROR',
+    message: 'Internal server error',
   };
 
   static NOT_IMPLEMENTED: CodeDescription = {

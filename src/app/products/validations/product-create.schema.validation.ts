@@ -1,77 +1,36 @@
-import * as JoiBase from 'joi';
+import { z } from 'zod';
 
-import { CreateSchema } from '@app/@common/application/validators/joi/schemas/joi.create-schema.interface';
-import joiMessagesSchema from '@app/@common/application/validators/joi/schemas/joi.messages.schema';
+import { CreateValidationSchema } from '@app/@common/application/validators/zod/schemas';
 
-const Joi = JoiBase;
-
-export class ProductCreateSchemaValidation implements CreateSchema {
-  createSchema(): JoiBase.ObjectSchema {
-    return Joi.object({
-      title: Joi.string()
-        .required()
-        .label('Título')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
+export class ProductCreateSchemaValidation implements CreateValidationSchema {
+  createSchema(): z.Schema {
+    return z.object({
+      title: z.string({
+        description: 'Título do produto',
+      }),
+      description: z.string({
+        description: 'Descrição do produto',
+      }),
+      price: z
+        .number({
+          description: 'Preço do produto',
         })
-        .messages(joiMessagesSchema),
-      description: Joi.string()
-        .required()
-        .label('Descrição')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
+        .min(1),
+      discount_percentage: z
+        .number({
+          description: 'Desconto do produto',
         })
-        .messages(joiMessagesSchema),
-      price: Joi.number()
-        .min(1)
-        .precision(2)
-        .required()
-        .label('Preço')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
-        })
-        .messages(joiMessagesSchema),
-      discount_percentage: Joi.number()
-        .integer()
+        .int()
         .min(0)
-        .max(100)
-        .label('Desconto (%)')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
+        .max(100),
+      warranty: z.string({
+        description: 'Garantia do produto',
+      }),
+      available: z
+        .boolean({
+          description: 'Disponibilidade do produto',
         })
-        .messages(joiMessagesSchema),
-      warranty: Joi.string()
-        .required()
-        .label('Garantia')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
-        })
-        .messages(joiMessagesSchema),
-      available: Joi.boolean()
-        .default(false)
-        .label('Disponibilidade')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
-        })
-        .messages(joiMessagesSchema),
+        .default(false),
     });
   }
 }

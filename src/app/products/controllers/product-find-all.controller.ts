@@ -16,8 +16,8 @@ import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
 
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
-import { HeadersPaginationInterceptor } from '@app/@common/application/interceptors/headers-pagination.interceptors';
-import { JoiValidationPipe } from '@app/@common/application/pipes/joi-validation.pipe';
+import { HeadersPaginationInterceptor } from '@app/@common/application/interceptors';
+import { ZodValidationPipe } from '@app/@common/application/pipes';
 import {
   QueryFilterSchema,
   QueryFilterSchemaProps,
@@ -47,7 +47,7 @@ export class ProductFindAllController {
   @ApiOkResponse({ description: 'Show products', type: ProductFindAllOutput })
   @UseInterceptors(HeadersPaginationInterceptor)
   execute(
-    @Query(new JoiValidationPipe(new QueryFilterSchema()))
+    @Query(new ZodValidationPipe(new QueryFilterSchema()))
     query: QueryFilterSchemaProps,
   ): Observable<AxiosResponse<ProductFindAllOutput[]>> {
     return this.useCase.execute(query);

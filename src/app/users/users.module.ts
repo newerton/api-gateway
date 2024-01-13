@@ -2,7 +2,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env/api-server.config';
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
 import { UserChangePasswordController } from './controllers/user-change-password.controller';
 import { UserCreateController } from './controllers/user-create.controller';
