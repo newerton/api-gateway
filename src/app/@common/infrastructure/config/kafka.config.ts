@@ -1,4 +1,4 @@
-import { KafkaServerConfig } from '@core/@shared/infrastructure/config/env/kafka-server.config';
+import { KafkaServerConfig } from '@core/@shared/infrastructure/config/env';
 
 export default () => ({
   kafka: {

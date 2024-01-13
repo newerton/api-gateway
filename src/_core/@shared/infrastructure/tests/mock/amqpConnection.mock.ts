@@ -5,7 +5,7 @@ export const mockAmqpConnection = {
   publish: jest.fn((_exchange, _routingKey, message) => {
     if (!message) {
       throw Exception.new({
-        code: Code.BAD_REQUEST,
+        code: Code.BAD_REQUEST.code,
         overrideMessage: 'Bad Request',
       });
     }

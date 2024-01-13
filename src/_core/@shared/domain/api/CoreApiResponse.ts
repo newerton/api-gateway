@@ -31,9 +31,9 @@ export class CoreApiResponse<T> {
     message?: string,
     details?: any[],
   ): CoreApiResponse<T> {
-    const resultCode: number = code || Code.INTERNAL_ERROR.code;
-    const resultError: string = error || Code.INTERNAL_ERROR.error;
-    const resultMessage: string = message || Code.INTERNAL_ERROR.message;
+    const resultCode: number = code || Code.INTERNAL_SERVER_ERROR.code;
+    const resultError: string = error || Code.INTERNAL_SERVER_ERROR.error;
+    const resultMessage: string = message || Code.INTERNAL_SERVER_ERROR.message;
 
     return new CoreApiResponse(resultCode, resultError, resultMessage, details);
   }

@@ -2,6 +2,8 @@
 /dist
 /node_modules
 .env
+yarn.lock
+/.docker/rabbitmq_data
 
 # Logs
 logs
@@ -34,6 +36,4 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-# Plugins - VSCode
 .history/

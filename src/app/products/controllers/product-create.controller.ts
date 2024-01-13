@@ -11,7 +11,7 @@ import {
 import { Observable } from 'rxjs';
 
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
-import { JoiValidationPipe } from '@app/@common/application/pipes/joi-validation.pipe';
+import { ZodValidationPipe } from '@app/@common/application/pipes';
 import {
   Resource,
   Scopes,
@@ -54,7 +54,7 @@ export class ProductCreateController {
     type: ProductCreateInput,
   })
   execute(
-    @Payload(new JoiValidationPipe(new ProductCreateSchemaValidation()))
+    @Payload(new ZodValidationPipe(new ProductCreateSchemaValidation()))
     payload: ProductCreateInput,
   ): Observable<ProductCreateOutput> {
     return this.useCase.execute(payload);

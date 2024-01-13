@@ -8,14 +8,14 @@ import {
   ResourceGuard,
   RoleGuard,
   TokenValidation,
-} from 'nest-keycloak-connect/keycloak-connect.module';
+} from 'nest-keycloak-connect';
 
+import { ZodValidationExceptionFilter } from '@app/@common/application/exceptions/filter';
 import { HttpExceptionFilter } from '@app/@common/application/exceptions/filter/http-exception.filter';
-import { JoiValidationExceptionFilter } from '@app/@common/application/exceptions/filter/joi-validation-exception.filter';
 import { HttpLoggingInterceptor } from '@app/@common/application/interceptors/http-logging.interceptor';
 import kafkaConfig from '@app/@common/infrastructure/config/kafka.config';
 import keycloakConfig from '@app/@common/infrastructure/config/keycloak.config';
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env/api-server.config';
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
 import { AuthModule } from './app/auth/auth.module';
 import { ProductsModule } from './app/products/products.module';
@@ -40,7 +40,7 @@ const providers: Provider[] = [
   },
   {
     provide: APP_FILTER,
-    useClass: JoiValidationExceptionFilter,
+    useClass: ZodValidationExceptionFilter,
   },
 ];
 

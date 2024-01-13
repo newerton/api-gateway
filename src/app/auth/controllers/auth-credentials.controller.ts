@@ -6,8 +6,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AxiosResponse } from 'axios';
-import { Resource } from 'nest-keycloak-connect';
-import { Public, Scopes } from 'nest-keycloak-connect/keycloak-connect.module';
+import { Public, Resource, Scopes } from 'nest-keycloak-connect';
 import { Observable } from 'rxjs';
 
 import { AuthCredentialsOutput } from '../dto/auth-crendetials.dto';

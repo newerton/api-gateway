@@ -1,17 +1,15 @@
-import * as JoiBase from 'joi';
+import { z } from 'zod';
 
-import { CreateSchema } from '../joi/schemas/joi.create-schema.interface';
+import { CreateValidationSchema } from '../zod/schemas';
 
 export type QueryFilterSchemaProps = {
   page?: number;
 };
 
-const Joi = JoiBase;
-
-export class QueryFilterSchema implements CreateSchema {
-  createSchema(): JoiBase.ObjectSchema {
-    return Joi.object({
-      page: Joi.number().integer().min(1).default(1),
+export class QueryFilterSchema implements CreateValidationSchema {
+  createSchema(): z.Schema {
+    return z.object({
+      page: z.number().int().min(1).default(1),
     });
   }
 }
