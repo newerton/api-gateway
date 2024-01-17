@@ -38,7 +38,7 @@
 | Category       | 🟦     |
 | Payment        | 🟦     |
 | Log            | 🟦     |
-| Notifications  | 🟦     |
+| Notifications  | ✅     |
 
 ✅ Developed 🟦 Not developed
 
@@ -48,8 +48,9 @@
 | --- | --- |
 | Helm Services | https://github.com/newerton/microservice-k8s |
 | auth-engine | https://github.com/newerton/auth-engine |
-| user-engine | https://github.com/newerton/user-engine |
+| notification-engine | https://github.com/newerton/notification-engine |
 | product-engine | https://github.com/newerton/product-engine |
+| user-engine | https://github.com/newerton/user-engine |
 
 ## Installation
 
