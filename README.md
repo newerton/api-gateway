@@ -67,7 +67,7 @@ tilt up
 ```
 ## Running the api-gateway
 
-Execute api-gateway inside api-gateway folder
+Inside api-gateway folder
 
 ```cli
 npm install
