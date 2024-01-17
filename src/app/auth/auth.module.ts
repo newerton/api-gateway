@@ -1,5 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
@@ -15,7 +15,7 @@ import { AuthLoginFacebookUseCase } from './use-cases/auth-login-facebook.use-ca
 import { AuthLoginGoogleUseCase } from './use-cases/auth-login-google.use-case';
 import { AuthLoginUseCase } from './use-cases/auth-login.use-case';
 
-const useCases = [
+const useCases: Provider[] = [
   AuthCredentialsUseCase,
   AuthLoginAppleUseCase,
   AuthLoginFacebookUseCase,
@@ -44,6 +44,6 @@ const useCases = [
     AuthLoginController,
   ],
   providers: [...useCases],
-  exports: [...useCases],
+  // exports: [...useCases],
 })
 export class AuthModule {}

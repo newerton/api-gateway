@@ -1,5 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
@@ -11,6 +11,7 @@ import {
 } from './controllers';
 import { ProductCreateUseCase, ProductFindAllUseCase } from './use-cases';
 
+const useCases: Provider[] = [ProductCreateUseCase, ProductFindAllUseCase];
 @Module({
   imports: [
     HttpModule,
@@ -48,6 +49,6 @@ import { ProductCreateUseCase, ProductFindAllUseCase } from './use-cases';
     ]),
   ],
   controllers: [ProductCreateController, ProductFindAllController],
-  providers: [ProductCreateUseCase, ProductFindAllUseCase],
+  providers: [...useCases],
 })
 export class ProductsModule {}

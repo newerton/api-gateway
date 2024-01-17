@@ -7,6 +7,13 @@ export type CreateExceptionPayload<T> = {
   data?: T;
 };
 
+export type DefaultExceptionResponse = {
+  code: number;
+  error: string;
+  message: string;
+  details: Array<{ [key: string]: string }>;
+};
+
 export class Exception<T> extends Error {
   public readonly code: number;
 

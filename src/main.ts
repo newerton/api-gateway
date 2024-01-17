@@ -30,8 +30,6 @@ async function bootstrap() {
 
   // lightship.registerShutdownHandler(() => app.close());
 
-  // app.useGlobalPipes(new ValidationPipe());
-
   if (ApiServerConfig.ENV !== 'test') {
     app.enableShutdownHooks(); // Disable in test
   }

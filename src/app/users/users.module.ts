@@ -44,6 +44,6 @@ const useCases = [
     UserUpdateController,
   ],
   providers: [...useCases],
-  exports: [...useCases],
+  // exports: [...useCases],
 })
 export class UsersModule {}
