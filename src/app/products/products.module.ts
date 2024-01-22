@@ -37,10 +37,11 @@ const useCases: Provider[] = [ProductCreateUseCase, ProductFindAllUseCase];
           options: {
             client: {
               clientId: 'product',
-              brokers: [config.get<string>('kafka.brokers')],
+              brokers: config.get<string[]>('kafka.brokers'),
+              // logLevel: 5,
             },
             consumer: {
-              groupId: 'product-consumer',
+              groupId: 'product-consumer-api-gateway',
               allowAutoTopicCreation: true,
             },
           },

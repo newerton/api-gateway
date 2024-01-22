@@ -1,6 +1,10 @@
 import { LogLevel, Module, Provider } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+
+import { ZodValidationExceptionFilter } from '@app/@common/application/exceptions/filter';
+import { HttpExceptionFilter } from '@app/@common/application/exceptions/filter/http-exception.filter';
+import { HttpLoggingInterceptor } from '@app/@common/application/interceptors/http-logging.interceptor';
 import {
   AuthGuard,
   KeycloakConnectModule,
@@ -8,11 +12,7 @@ import {
   ResourceGuard,
   RoleGuard,
   TokenValidation,
-} from 'nest-keycloak-connect';
-
-import { ZodValidationExceptionFilter } from '@app/@common/application/exceptions/filter';
-import { HttpExceptionFilter } from '@app/@common/application/exceptions/filter/http-exception.filter';
-import { HttpLoggingInterceptor } from '@app/@common/application/interceptors/http-logging.interceptor';
+} from '@app/@common/infrastructure/adapter/identity-and-access/keycloak';
 import kafkaConfig from '@app/@common/infrastructure/config/kafka.config';
 import keycloakConfig from '@app/@common/infrastructure/config/keycloak.config';
 import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';

@@ -31,8 +31,10 @@ import { ProductCreateSchemaValidation } from '../validations/product-create.sch
 @ApiBadRequestResponse({ description: 'Bad Request', type: ErrorSchema })
 export class ProductCreateController {
   constructor(
-    @Inject('PRODUCT_SERVICE_KAFKA') private readonly clientKafka: ClientKafka,
     private readonly useCase: ProductCreateUseCase,
+
+    @Inject('PRODUCT_SERVICE_KAFKA')
+    private readonly clientKafka: ClientKafka,
   ) {}
 
   async onModuleInit() {

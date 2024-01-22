@@ -10,7 +10,8 @@ import {
 @Injectable()
 export class ProductCreateUseCase {
   constructor(
-    @Inject('PRODUCT_SERVICE_KAFKA') private readonly clientKafka: ClientKafka,
+    @Inject('PRODUCT_SERVICE_KAFKA')
+    private readonly clientKafka: ClientKafka,
   ) {}
 
   // create(payload: ProductCreateInput): Observable<AxiosResponse<ProductCreateOutput>> {
