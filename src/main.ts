@@ -1,8 +1,8 @@
+import csurf from '@dr.pogodin/csurf';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import csurf from 'csurf';
 import helmet from 'helmet';
 // import {
 //   type ConfigurationInput,
