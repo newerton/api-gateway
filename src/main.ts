@@ -64,4 +64,8 @@ async function bootstrap() {
     );
   });
 }
-bootstrap();
+
+bootstrap().catch((error) => {
+  logger.error('Error during bootstrap', error);
+  console.log(error);
+});

@@ -31,11 +31,11 @@ export class KafkaServerConfig {
   public static readonly KAFKA_BROKER_2_PORT: number =
     this.envRequiredAsPortNumber('KAFKA_BROKER_2_PORT');
 
-  private static envRequiredAsString(key): string {
+  private static envRequiredAsString(key: string): string {
     return env.get(key).required().asString();
   }
 
-  private static envRequiredAsPortNumber(key): number {
+  private static envRequiredAsPortNumber(key: string): number {
     return env.get(key).required().asPortNumber();
   }
 }

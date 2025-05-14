@@ -42,11 +42,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
     errorResponse = this.handleAxiosException(error, errorResponse);
 
     if (ApiServerConfig.LOG_ENABLE && request) {
-      const acceptableVersions = request.headers?.hasOwnProperty(
-        'accept-version',
-      )
-        ? request.headers['accept-version']
-        : '--';
+      const acceptableVersions =
+        request.headers &&
+        Object.prototype.hasOwnProperty.call(request.headers, 'accept-version')
+          ? Array.isArray(request.headers['accept-version'])
+            ? request.headers['accept-version'].join(',')
+            : request.headers['accept-version']
+          : '--';
       const message: string =
         `${request.method} ${request.path}; ` +
         `Error: ${errorResponse.error}; ` +
@@ -77,12 +79,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
     errorResponse: CoreApiResponse<unknown>,
   ): CoreApiResponse<unknown> {
     if (error instanceof HttpException) {
-      const findCode =
-        Exception.findCodeByCodeValue(error.getStatus()) ||
-        Code.INTERNAL_SERVER_ERROR;
+      const findCode = Exception.findCodeByCodeValue(error.getStatus());
+      const codeDescription =
+        typeof findCode === 'number' ? Code.INTERNAL_SERVER_ERROR : findCode;
+      const finalCode =
+        codeDescription.code < 100
+          ? Code.INTERNAL_SERVER_ERROR.code
+          : codeDescription.code;
       errorResponse = CoreApiResponse.error(
-        findCode.code < 100 ? Code.INTERNAL_SERVER_ERROR.code : findCode.code,
-        findCode.error || Code.INTERNAL_SERVER_ERROR.error,
+        finalCode,
+        codeDescription.error,
         error.message,
         null,
       );
@@ -129,13 +135,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
           500,
           Code.INTERNAL_SERVER_ERROR.error,
           'Servidor não encontrado',
-          data,
+          Array.isArray(data) ? data : [data],
         );
         return errorResponse;
       }
 
       const findCode =
-        Exception.findCodeByCodeValue(error.response.status) ||
+        Exception.findCodeByCodeValue(error.response.status as number) ||
         Code.INTERNAL_SERVER_ERROR;
 
       delete error.config.baseURL;
@@ -155,8 +161,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
       errorResponse = CoreApiResponse.error(
         findCode.code,
         findCode.error,
-        error.response.data.message || findCode.message,
-        details,
+        `${error.response.data.message || findCode.message}`,
+        Array.isArray(details) ? details : [details],
       );
     }
     return errorResponse;

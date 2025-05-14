@@ -57,8 +57,8 @@ export class AuthGuard implements CanActivate {
     // Extract request/response
     const [request] = extractRequest(context);
     const jwt =
-      this.extractJwtFromCookie(request.cookies) ??
-      this.extractJwt(request.headers);
+      this.extractJwtFromCookie(request.cookies as { [key: string]: string }) ??
+      this.extractJwt(request.headers as { [key: string]: string });
     const isInvalidJwt = jwt === null || jwt === undefined;
 
     // Invalid JWT, but skipAuth = false, isUnprotected = true allow fallback
@@ -117,7 +117,9 @@ export class AuthGuard implements CanActivate {
         case TokenValidation.NONE:
           return true;
         default:
-          this.logger.warn(`Unknown validation method: ${tokenValidation}`);
+          this.logger.warn(
+            `Unknown validation method: ${String(tokenValidation)}`,
+          );
           return false;
       }
     } catch (ex) {

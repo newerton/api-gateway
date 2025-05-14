@@ -47,7 +47,7 @@ export class KeycloakConnectModule {
       const configPath = path.join(process.cwd(), opts);
       const json = fs.readFileSync(configPath);
       const keycloakConfig = JSON.parse(json.toString());
-      return Object.assign(keycloakConfig, config);
+      return { ...keycloakConfig, ...config } as KeycloakConnectConfig;
     }
     return opts;
   }
@@ -140,9 +140,9 @@ export class KeycloakConnectModule {
 
   private static keycloakProvider: Provider = {
     provide: KEYCLOAK_INSTANCE,
-    useFactory: (opts: KeycloakConnectOptions) => {
-      const keycloakOpts: any = opts;
-      const keycloak: any = new KeycloakConnect({}, keycloakOpts);
+    useFactory: (opts: KeycloakConnectOptions): any => {
+      const keycloakOpts = opts;
+      const keycloak: any = new KeycloakConnect({}, keycloakOpts as string);
 
       // Warn if using token validation none
       if (

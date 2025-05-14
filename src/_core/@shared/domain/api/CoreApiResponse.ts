@@ -18,10 +18,10 @@ export class CoreApiResponse<T> {
     this.code = code;
     this.error = error;
     this.message = message;
-    this.details = details || [];
+    this.details = (details as T[]) || [];
   }
 
-  static success(data?: any): any {
+  static success(data?: unknown) {
     return data;
   }
 

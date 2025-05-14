@@ -31,7 +31,7 @@ const useCases: Provider[] = [ProductCreateUseCase, ProductFindAllUseCase];
       {
         name: 'PRODUCT_SERVICE_KAFKA',
         inject: [ConfigService],
-        useFactory: async (config: ConfigService) => ({
+        useFactory: (config: ConfigService) => ({
           name: 'PRODUCT_SERVICE_KAFKA',
           transport: Transport.KAFKA,
           options: {

@@ -18,7 +18,7 @@ export class ZodValidationPipe implements PipeTransform {
   private readonly schema: Schema;
 
   constructor(schemaFactory: CreateValidationSchema) {
-    this.schema = schemaFactory.createSchema() as Schema;
+    this.schema = schemaFactory.createSchema();
   }
 
   async transform(message: any): Promise<any> {
@@ -31,7 +31,7 @@ export class ZodValidationPipe implements PipeTransform {
       };
 
       if (err instanceof ZodError) {
-        const { issues } = err as ZodError;
+        const { issues } = err;
         if (issues.length > 0) {
           errors = {
             message: issues[0].message,

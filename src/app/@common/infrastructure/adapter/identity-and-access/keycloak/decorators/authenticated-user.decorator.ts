@@ -7,7 +7,7 @@ import { extractRequest } from '../util';
  * @since 1.5.0
  */
 export const AuthenticatedUser = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
+  (data: unknown, ctx: ExecutionContext): unknown => {
     const [req] = extractRequest(ctx);
     return req.user;
   },

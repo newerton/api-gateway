@@ -30,11 +30,11 @@ export class DatabaseServerConfig {
 
   public static readonly DBAUTH: string = env.get('DBAUTH').asString();
 
-  private static envRequiredAsString(key): string {
+  private static envRequiredAsString(key: string): string {
     return env.get(key).required().asString();
   }
 
-  private static envRequiredAsPortNumber(key): number {
+  private static envRequiredAsPortNumber(key: string): number {
     return env.get(key).required().asPortNumber();
   }
 }

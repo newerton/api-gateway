@@ -32,12 +32,22 @@ export class HeadersPaginationInterceptor implements NestInterceptor {
         response.setHeader('X-Pagination-Per-Page', paging.perPage);
         response.setHeader('X-Pagination-Total-Count', paging.totalCount);
 
-        return items;
+        return items as unknown[];
       }),
     );
   }
 
-  paginate({ total, page, limit, route }) {
+  paginate({
+    total,
+    page,
+    limit,
+    route,
+  }: {
+    total: number;
+    page: number;
+    limit: number;
+    route: string;
+  }) {
     const pages = Math.ceil(total / limit);
     const prevPage = page <= 1 ? 1 : page - 1;
     const nextPage = page >= pages ? pages : page + 1;

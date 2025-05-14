@@ -15,7 +15,7 @@ export class HttpLoggingInterceptor implements NestInterceptor {
   public intercept(
     context: ExecutionContext,
     next: CallHandler,
-  ): Observable<void> {
+  ): Observable<any> {
     const request: Request = context.switchToHttp().getRequest();
     const requestStartDate: number = Date.now();
 

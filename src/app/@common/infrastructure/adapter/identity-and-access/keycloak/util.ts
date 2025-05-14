@@ -1,9 +1,13 @@
 import { ContextType, ExecutionContext } from '@nestjs/common';
+import { Request, Response } from 'express';
 
 type GqlContextType = 'graphql' | ContextType;
 
-export const extractRequest = (context: ExecutionContext): [any, any] => {
-  let request: any, response: any;
+export const extractRequest = (
+  context: ExecutionContext,
+): [Request, Response] => {
+  let request: Request;
+  let response: Response;
 
   // Check if request is coming from graphql or http
   if (context.getType() === 'http') {
@@ -16,8 +20,9 @@ export const extractRequest = (context: ExecutionContext): [any, any] => {
     let gql: any;
     // Check if graphql is installed
     try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       gql = require('@nestjs/graphql');
-    } catch (er) {
+    } catch {
       throw new Error('@nestjs/graphql is not installed, cannot proceed');
     }
 
@@ -33,5 +38,5 @@ export const extractRequest = (context: ExecutionContext): [any, any] => {
 
 export const parseToken = (token: string): string => {
   const parts = token.split('.');
-  return JSON.parse(Buffer.from(parts[1], 'base64').toString());
+  return JSON.parse(Buffer.from(parts[1], 'base64').toString()) as string;
 };

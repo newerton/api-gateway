@@ -1,4 +1,4 @@
-import { Code } from '../error/Code';
+import { Code, CodeDescription } from '../error/Code';
 import { Optional } from '../type/CommonTypes';
 
 export type CreateExceptionPayload<T> = {
@@ -44,6 +44,10 @@ export class Exception<T> extends Error {
     return new Exception(payload.code, payload.overrideMessage, payload.data);
   }
 
-  public static findCodeByCodeValue = (codeValue: number) =>
-    Object.values(Code).find(({ code }) => code === codeValue);
+  static findCodeByCodeValue = (
+    codeValue: number,
+  ): CodeDescription | undefined =>
+    Object.values(Code).find(({ code }) => code === codeValue) as
+      | CodeDescription
+      | undefined;
 }

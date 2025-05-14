@@ -40,10 +40,10 @@ export class ProductCreateController {
   async onModuleInit() {
     const topics = ['products.create'];
 
-    topics.forEach(async (topic) => {
+    topics.forEach((topic) => {
       this.clientKafka.subscribeToResponseOf(topic);
-      await this.clientKafka.connect();
     });
+    await this.clientKafka.connect();
   }
 
   @Post()

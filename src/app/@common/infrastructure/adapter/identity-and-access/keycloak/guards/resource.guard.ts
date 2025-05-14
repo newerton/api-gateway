@@ -7,6 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { Request, Response } from 'express';
 import * as KeycloakConnect from 'keycloak-connect';
 
 import {
@@ -98,7 +99,7 @@ export class ResourceGuard implements CanActivate {
     }
 
     this.logger.verbose(
-      `Protecting resource [ ${resource} ] with scopes: [ ${scopes} ]`,
+      `Protecting resource [ ${resource} ] with scopes: [ ${scopes.join(',')} ]`,
     );
 
     // Build permissions
@@ -131,16 +132,18 @@ export class ResourceGuard implements CanActivate {
 }
 
 const createEnforcerContext =
-  (request: any, response: any, options?: KeycloakConnect.EnforcerOptions) =>
-  (keycloak: KeycloakConnect.Keycloak, permissions: string[]) =>
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    new Promise<boolean>((resolve, _) =>
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      keycloak.enforcer(permissions, options)(request, response, (_: any) => {
-        if (request.resourceDenied) {
-          resolve(false);
-        } else {
-          resolve(true);
-        }
-      }),
-    );
+  (
+    request: Request,
+    response: Response,
+    options?: KeycloakConnect.EnforcerOptions,
+  ) =>
+  (
+    keycloak: KeycloakConnect.Keycloak,
+    permissions: string[],
+  ): Promise<boolean> =>
+    new Promise((resolve) => {
+      const req = request as any;
+      keycloak.enforcer(permissions, options).call(null, req, response, () => {
+        resolve(!req.resourceDenied);
+      });
+    });
