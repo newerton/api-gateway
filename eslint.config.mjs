@@ -7,7 +7,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs', 'pm2.config.js'],
+    ignores: ['*.config.*'],
   },
   {
     plugins: {
