@@ -30,7 +30,7 @@
     "@nestjs/platform-express": "11.1.6",
     "@nestjs/swagger": "11.2.0",
     "bcrypt": "6.0.0",
-    "body-parser": "2.2.0",
+    "body-parser": "2.2.1",
     "cookie-parser": "1.4.7",
     "env-var": "7.5.0",
     "helmet": "8.1.0",
