@@ -27,7 +27,7 @@
     "@nestjs/core": "11.1.6",
     "@nestjs/mapped-types": "2.1.0",
     "@nestjs/microservices": "11.1.6",
-    "@nestjs/platform-express": "11.1.6",
+    "@nestjs/platform-express": "11.1.16",
     "@nestjs/swagger": "11.2.6",
     "bcrypt": "6.0.0",
     "body-parser": "2.2.1",
