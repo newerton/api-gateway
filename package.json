@@ -22,7 +22,7 @@
   "dependencies": {
     "@dr.pogodin/csurf": "1.16.5",
     "@nestjs/axios": "4.0.1",
-    "@nestjs/common": "11.1.6",
+    "@nestjs/common": "11.1.17",
     "@nestjs/config": "4.0.3",
     "@nestjs/core": "11.1.6",
     "@nestjs/mapped-types": "2.1.0",
