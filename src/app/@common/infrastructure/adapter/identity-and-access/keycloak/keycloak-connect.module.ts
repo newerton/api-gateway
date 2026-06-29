@@ -1,6 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
-
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import {
   ConsoleLogger,
   DynamicModule,
@@ -17,20 +16,20 @@ import {
   TokenValidation,
 } from './constants';
 import { KeycloakConnectModuleAsyncOptions } from './interface/keycloak-connect-module-async-options.interface';
-import { KeycloakConnectOptionsFactory } from './interface/keycloak-connect-options-factory.interface';
 import {
   KeycloakConnectConfig,
   KeycloakConnectOptions,
   NestKeycloakConfig,
 } from './interface/keycloak-connect-options.interface';
+import { KeycloakConnectOptionsFactory } from './interface/keycloak-connect-options-factory.interface';
 
 export * from './constants';
 export * from './decorators/authenticated-user.decorator';
 export * from './decorators/enforcer-options.decorator';
+export * from './decorators/public.decorator';
 export * from './decorators/resource.decorator';
 export * from './decorators/roles.decorator';
 export * from './decorators/scopes.decorator';
-export * from './decorators/public.decorator';
 export * from './guards/auth.guard';
 export * from './guards/resource.guard';
 export * from './guards/role.guard';
@@ -69,21 +68,37 @@ export class KeycloakConnectModule {
 
     return {
       module: KeycloakConnectModule,
-      providers: [optsProvider, this.loggerProvider, this.keycloakProvider],
-      exports: [optsProvider, this.loggerProvider, this.keycloakProvider],
+      providers: [
+        optsProvider,
+        KeycloakConnectModule.loggerProvider,
+        KeycloakConnectModule.keycloakProvider,
+      ],
+      exports: [
+        optsProvider,
+        KeycloakConnectModule.loggerProvider,
+        KeycloakConnectModule.keycloakProvider,
+      ],
     };
   }
 
   public static registerAsync(
     opts: KeycloakConnectModuleAsyncOptions,
   ): DynamicModule {
-    const optsProvider = this.createConnectProviders(opts);
+    const optsProvider = KeycloakConnectModule.createConnectProviders(opts);
 
     return {
       module: KeycloakConnectModule,
       imports: opts.imports || [],
-      providers: [optsProvider, this.loggerProvider, this.keycloakProvider],
-      exports: [optsProvider, this.loggerProvider, this.keycloakProvider],
+      providers: [
+        optsProvider,
+        KeycloakConnectModule.loggerProvider,
+        KeycloakConnectModule.keycloakProvider,
+      ],
+      exports: [
+        optsProvider,
+        KeycloakConnectModule.loggerProvider,
+        KeycloakConnectModule.keycloakProvider,
+      ],
     };
   }
 
@@ -91,7 +106,7 @@ export class KeycloakConnectModule {
     options: KeycloakConnectModuleAsyncOptions,
   ): Provider {
     if (options.useExisting || options.useFactory) {
-      return this.createConnectOptionsProvider(options);
+      return KeycloakConnectModule.createConnectOptionsProvider(options);
     }
 
     // useClass

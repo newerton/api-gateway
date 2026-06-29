@@ -1,6 +1,5 @@
-import { PolicyEnforcementMode, TokenValidation } from 'nest-keycloak-connect';
-
 import { KeycloakServerConfig } from '@core/@shared/infrastructure/config/env';
+import { PolicyEnforcementMode, TokenValidation } from 'nest-keycloak-connect';
 
 export default () => ({
   keycloak: {

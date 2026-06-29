@@ -1,3 +1,9 @@
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
+import { ZodValidationPipe } from '@app/@common/application/pipes';
+import {
+  Resource,
+  Scopes,
+} from '@app/@common/infrastructure/adapter/identity-and-access/keycloak';
 import { Controller, HttpCode, Inject, Post } from '@nestjs/common';
 import { ClientKafka, Payload } from '@nestjs/microservices';
 import {
@@ -9,13 +15,6 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
-
-import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
-import { ZodValidationPipe } from '@app/@common/application/pipes';
-import {
-  Resource,
-  Scopes,
-} from '@app/@common/infrastructure/adapter/identity-and-access/keycloak';
 
 import {
   ProductCreateInput,

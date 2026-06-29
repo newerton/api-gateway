@@ -1,9 +1,8 @@
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 import { HttpModule } from '@nestjs/axios';
 import { Module, Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
 import {
   ProductCreateController,

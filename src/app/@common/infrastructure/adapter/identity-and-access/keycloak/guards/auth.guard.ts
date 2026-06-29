@@ -149,6 +149,6 @@ export class AuthGuard implements CanActivate {
   private extractJwtFromCookie(cookies: { [key: string]: string }) {
     const cookieKey = this.keycloakOpts.cookieKey || KEYCLOAK_COOKIE_DEFAULT;
 
-    return cookies && cookies[cookieKey];
+    return cookies?.[cookieKey];
   }
 }

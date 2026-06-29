@@ -1,3 +1,15 @@
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
+import { HeadersPaginationInterceptor } from '@app/@common/application/interceptors';
+import { ZodValidationPipe } from '@app/@common/application/pipes';
+import {
+  QueryFilterSchema,
+  QueryFilterSchemaProps,
+} from '@app/@common/application/validators/query-params/query-filter.schema.validation';
+import {
+  Public,
+  Resource,
+  Scopes,
+} from '@app/@common/infrastructure/adapter/identity-and-access/keycloak';
 import {
   Controller,
   Get,
@@ -14,19 +26,6 @@ import {
 } from '@nestjs/swagger';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
-
-import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
-import { HeadersPaginationInterceptor } from '@app/@common/application/interceptors';
-import { ZodValidationPipe } from '@app/@common/application/pipes';
-import {
-  QueryFilterSchema,
-  QueryFilterSchemaProps,
-} from '@app/@common/application/validators/query-params/query-filter.schema.validation';
-import {
-  Public,
-  Resource,
-  Scopes,
-} from '@app/@common/infrastructure/adapter/identity-and-access/keycloak';
 
 import { ProductFindAllOutput } from '../dto/product-find-all.dto';
 import { ProductFindAllUseCase } from '../use-cases/product-find-all.use-case';

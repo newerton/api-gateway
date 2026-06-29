@@ -1,3 +1,7 @@
+import { CoreApiResponse } from '@core/@shared/domain/api/CoreApiResponse';
+import { Code, CodeDescription } from '@core/@shared/domain/error/Code';
+import { Exception } from '@core/@shared/domain/exception/Exception';
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 import {
   ArgumentsHost,
   Catch,
@@ -6,11 +10,6 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-
-import { CoreApiResponse } from '@core/@shared/domain/api/CoreApiResponse';
-import { Code, CodeDescription } from '@core/@shared/domain/error/Code';
-import { Exception } from '@core/@shared/domain/exception/Exception';
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
 type HttpExceptionFilterProperties = Error &
   CodeDescription & {
@@ -43,8 +42,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (ApiServerConfig.LOG_ENABLE && request) {
       const acceptableVersions =
-        request.headers &&
-        Object.prototype.hasOwnProperty.call(request.headers, 'accept-version')
+        request.headers && Object.hasOwn(request.headers, 'accept-version')
           ? Array.isArray(request.headers['accept-version'])
             ? request.headers['accept-version'].join(',')
             : request.headers['accept-version']

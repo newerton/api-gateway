@@ -1,5 +1,3 @@
 export default {
-  '*.{js,ts}': 'eslint --fix',
-  '*.{js,ts,css,scss,md}': 'prettier --ignore-unknown --write',
-  '*.js': 'eslint --cache --fix',
+  '*.{js,ts,json}': 'biome check --write --unsafe --no-errors-on-unmatched',
 };

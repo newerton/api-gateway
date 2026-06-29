@@ -1,10 +1,9 @@
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 import type { INestApplication } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import type { SwaggerCustomOptions } from '@nestjs/swagger';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SwaggerTheme } from 'swagger-themes';
-
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
 const logger = new Logger('Swagger');
 

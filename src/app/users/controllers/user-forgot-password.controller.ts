@@ -1,3 +1,10 @@
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
+import { MessageResponseSchema } from '@app/@common/application/documentations/openapi/swagger/message-response.schema';
+import {
+  Public,
+  Resource,
+  Scopes,
+} from '@app/@common/infrastructure/adapter/identity-and-access/keycloak';
 import { Controller, HttpCode, Post } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
@@ -10,14 +17,6 @@ import {
 } from '@nestjs/swagger';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
-
-import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
-import { MessageResponseSchema } from '@app/@common/application/documentations/openapi/swagger/message-response.schema';
-import {
-  Public,
-  Resource,
-  Scopes,
-} from '@app/@common/infrastructure/adapter/identity-and-access/keycloak';
 
 import { UserForgotPasswordInput } from '../dto/user-forgot-password.dto';
 import { User } from '../entities/user.entity';

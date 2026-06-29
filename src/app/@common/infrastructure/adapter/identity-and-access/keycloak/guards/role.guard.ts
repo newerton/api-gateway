@@ -37,7 +37,7 @@ export class RoleGuard implements CanActivate {
       context.getHandler(),
     );
 
-    if (!rolesMetaData || rolesMetaData.roles.length == 0) {
+    if (!rolesMetaData || rolesMetaData.roles.length === 0) {
       return true;
     }
 

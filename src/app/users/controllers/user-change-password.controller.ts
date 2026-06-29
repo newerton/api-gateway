@@ -1,3 +1,4 @@
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { Controller, Headers, HttpCode, Put } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
@@ -12,8 +13,6 @@ import {
 import { AxiosResponse } from 'axios';
 import { Resource, Scopes } from 'nest-keycloak-connect';
 import { Observable } from 'rxjs';
-
-import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 
 import { UserChangePasswordInput } from '../dto/user-change-password.dto';
 import { User } from '../entities/user.entity';

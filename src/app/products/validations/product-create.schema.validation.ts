@@ -1,6 +1,5 @@
-import { z } from 'zod';
-
 import { CreateValidationSchema } from '@app/@common/application/validators/zod/schemas';
+import { z } from 'zod';
 
 export class ProductCreateSchemaValidation implements CreateValidationSchema {
   createSchema(): z.Schema {

@@ -1,3 +1,8 @@
+import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
+import {
+  Resource,
+  Scopes,
+} from '@app/@common/infrastructure/adapter/identity-and-access/keycloak';
 import { Controller, Headers, HttpCode, Put } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
@@ -11,12 +16,6 @@ import {
 } from '@nestjs/swagger';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
-
-import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
-import {
-  Resource,
-  Scopes,
-} from '@app/@common/infrastructure/adapter/identity-and-access/keycloak';
 
 import { UserUpdateInput } from '../dto/user-update.dto';
 import { User } from '../entities/user.entity';
