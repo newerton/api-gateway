@@ -79,7 +79,7 @@
     "js-yaml": "^5.2.3",
     "multer": "^2.3.0",
     "piscina": "^4.9.3",
-    "adm-zip": "^0.6.0"
+    "adm-zip": "^0.6.1"
   },
   "allowScripts": {
     "@swc/core@1.15.43": true,
