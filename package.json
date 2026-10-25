@@ -41,7 +41,7 @@
     "rxjs": "7.8.2",
     "swagger-themes": "1.4.3",
     "swagger-ui-express": "5.0.1",
-    "zod": "4.6.2"
+    "zod": "4.6.6"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.13",
